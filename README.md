@@ -13,8 +13,19 @@ nodejs
 http://www.nodebeginner.org/index-zh-cn.html
 这篇文章我看了好几遍，推荐
 
+
+我用到的框架，数据库和插件：
+数据库存储用的mongodb
+框架express
+前端框架：jquery和bootstrap，以及underscore
+摸版ejs
+功能：异步ajax-不跨越，然后扩展跨域的方法；
+socket 结合html5实时通信；
+图片上传，以及扩展gm对图片进行处理
+nodejs对mongodb的增删改查，以及2两表联查
+
 系列目录：
-nodejs实战案例（Express框架+mongoDB）——（1）——前言
+<a href="http://hi.baidu.com/tang_guangyao/item/a3c4cdd1b41c776edcf9be18" target="_blank" title="nodejs实战案例（Express框架+mongoDB）——（1）——前言">nodejs实战案例（Express框架+mongoDB）——（1）——前言</a>
 nodejs实战案例（Express框架+mongoDB）——（2）——安装框架，数据库，插件以及数据库连接
 nodejs实战案例（Express框架+mongoDB）——（3）——路由，摸版引擎基础知识
 nodejs实战案例（Express框架+mongoDB）——（4）——路由配置,ejs引擎
