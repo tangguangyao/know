@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>know</title>
+<base href="http://localhost:3000/" />
+<link rel="stylesheet" href="stylesheets/style.css">
+<link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+<script type="text/javascript" src="javascripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="javascripts/underscore.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="#">nodejs</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a href="/">首页</a></li>
+          <li><a href="/show">信息广场</a></li>
+          <li><a href="/people">个人主页</a></li>
+          <li><a href="#myModal" data-toggle="modal">提问</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">小工具<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/baike">百度百科</a></li>
+            </ul>
+            <% if(user){%>
+            <li><a href="/loginout">退出</a></li>
+            <li><a href="/people/<%= user.name%>" id="myName"><%= user.name%></a></li>
+            <li id="news" style="display:none;"><a href="#talkBox" data-toggle="modal"><i class="icon-envelope icon-white"></i></a></li>
+            <% }%>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 提问 -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">提问框</h3>
+  </div>
+  <div class="modal-body">
+    <p><input type="text" placeholder="标题" name="title" id="askTitle"></p>
+    <textarea name="askText" rows="13" placeholder="正文" style="width:400px" id="askText"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="closeAsk">关闭</button>
+    <button class="btn" id="askPost">提问</button>
+  </div>
+</div>
+<!-- 聊天 -->
+<div id="talkBox" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <p>聊天</p>
+    <div class="modal-body" id="talkCom">
+    </div>
+    <textarea name="askText" rows="5" placeholder="正文" style="width:400px" id="selfTalk"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="closeAsk">关闭</button>
+    <button class="btn" id="talkPost">提问</button>
+  </div>
+</div>
+<script>
+$("#askPost").on("click",function(){
+  $.post("ask", { title: $("#askTitle").val(), askText: $("#askText").val() },function(data) {
+    if(data.status==1){
+      $("#closeAsk").click();
+    }
+  });
+});
+
+var socket = io.connect();
+var talkNews={};
+//接收聊天消息
+socket.on('selfTalk',function(data){
+  talkNews.from=data.from;
+  $("#news").show();
+  $("#talkCom").append("<p>"+data.from+"对你说："+data.talk+"</p>");
+});
+//发送聊天消息
+$("#talkPost").on("click",function(){
+  if($("#toName").length>0){
+    talkNews.from=$("#toName").text();
+  }
+  socket.emit('selfTalk',
+    {from:$("#myName").text(),
+    to:talkNews.from,
+    talk:$("#selfTalk").val()},
+    function(info){
+      if(info=="ok"){
+        $("#talkCom").append("<p style='color:pink;'>你对"+$("#toName").text()+"说："+$("#selfTalk").val()+"</p>");
+        $("#selfTalk").val("");
+      }
+  });
+});
+//点击消息显示
+$("#news").on("click",function(){
+  $("#news").hide();
+});
+</script>
+<% if(user){%>
+<script>
+//如果登陆，发送信息
+socket.emit('online',{user:"<%= user.name%>"});
+</script>
+<% }%>

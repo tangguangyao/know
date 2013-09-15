@@ -1,0 +1,78 @@
+<%- include header %>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span7">
+      <ul class="thumbnails" id="element">
+        <% lists.forEach(function(list, index){ %>
+        <li>
+          <div class="span2">
+            <div class="row" style="margin-top:20px;">
+              <div class="span8 offset2">
+                <a href='<%= list.url %>'><img src="<%= list.imgUrl %>"></a>
+              </div>
+              <div class="span8 offset2">
+                <%= list.name %>
+              </div>
+            </div>
+          </div>
+          <div class="span9">
+            <h3><a href="/question/<%= list._id %>"><%= list.title %></a></h3>
+            <p><%= list.askText %></p>
+            <p><span><%= list.time.minute %></span><span>学习</span></p>
+          </div>
+        </li>
+        <% }) %>
+      </ul>
+<script type="text/template" id="tpl">
+    [% for(var i = 0; i < list.length; i++) { %]
+        [% var item = list[i] %]
+        <li>
+          <div class="span2">
+            <div class="row" style="margin-top:20px;">
+              <div class="span8 offset2">
+                <a href=[%=item.url%]><img src="[%=item.imgUrl%]"></a>
+              </div>
+              <div class="span8 offset2">
+                [%=item.name%]
+              </div>
+            </div>
+          </div>
+          <div class="span9">
+            <h3><a href="/question/[%= item._id %]">[%=item.title%]</a></h3>
+            <p>[%=item.askText%]</p>
+            <p><span>[%=item.time.minute%]</span><span>学习</span></p>
+          </div>
+        </li>
+    [% } %]
+</script>
+      <button class="btn" id="getMore">加载更多</button>
+    </div>
+    <div class="span4">
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+    </div>
+  </div>
+</div>
+<script>
+var pageNum=1;
+$("#getMore").on("click",function(){
+  $.get("/getQuestion", { page: pageNum } ,function(info){
+    for(var i=0,l=info.length;i<l;i++){
+      info[i].url="/people/"+info[i].name;
+    }
+    pageNum++;
+    var element = $('#element'),
+        tpl = $('#tpl').html();
+    var render = _.template(tpl);
+    var data = {};
+    data.list=info;
+    var html = render(data);
+    // 将解析后的内容填充到渲染元素
+    element.append(html);
+  });
+});
+</script>
+<%- include footer %>

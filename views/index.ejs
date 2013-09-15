@@ -1,0 +1,56 @@
+<%- include header %>
+<div class="container">
+  <div class="row hero-unit">
+    <div class="span4">
+          <h1><%= title%></h1>
+          <p><%= name%></p>
+    </div>
+    <div class="span3 offset3">
+      <form id="login" action="/login" method="post">
+        <fieldset>
+          <div class="row-fluid">
+            <div class="span3">登陆</div>
+            <div class="span5 offset4" id="changeReg" style="cursor:pointer">切换注册</div>
+          </div>
+          <input type="text" placeholder="用户名" name="name">
+          <input type="password" name="password" placeholder="密码">
+          <button type="submit" class="btn">登陆</button>
+             
+        </fieldset>
+      </form>
+      <form id="reg" action="/reg" method="post">
+        <fieldset>
+          <div class="row-fluid">
+            <div class="span3">注册</div>
+            <div class="span5 offset4" id="changeLog" style="cursor:pointer">切换登陆</div>
+          </div>
+          <input type="text" placeholder="用户名" name="name">
+          <input type="password" name="password" placeholder="密码">
+          <input type="password" name="repassword" placeholder="确定密码">
+          <% if (locals.error) { %>
+            <div><%= locals.error %> </div>
+          <% } %>
+          <% if(locals.success) {%>
+            <div><%= locals.success %> </div>
+          <% } %>
+          <button type="submit" class="btn">注册</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <footer>
+  </footer>
+</div>
+<script>
+$("#login").hide();
+$("#changeReg").on("click",function(){
+  $("#login").hide();
+  $("#reg").show();
+});
+$("#changeLog").on("click",function(){
+  $("#login").show();
+  $("#reg").hide();
+});
+</script>
+<%- include footer %>

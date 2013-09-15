@@ -1,0 +1,32 @@
+<%- include header %>
+<div class="container">
+  <div class="row-fluid">
+    <div class="span7">
+      <div>
+        <h1><%= items.title %></h1>
+        <p><%= items.askText %></p>
+      </div>
+      <ul>
+        <% items.answer.forEach(function(q, index){ %>
+        <li>
+          <h4><%= q.user.name %></h4>
+          <p><%= q.answer %></p>
+        </li>
+        <% })%>
+      </ul>
+      <form action="answer" method="post">
+        <input name="questionId" value="<%= id %>" style="display:none">
+        <textarea name="answer"></textarea>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div class="span4">
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+      <h2>我的信息</h2>
+    </div>
+  </div>
+</div>
+<%- include footer %>

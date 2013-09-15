@@ -1,0 +1,13 @@
+<%- include header %>
+<div class="container">
+<h1>后台管理</h1>
+<form action="/adminLogin" method="post">
+  <fieldset>
+    <legend>登陆</legend>
+    <input type="text" name="name" placeholder="用户名">
+    <input type="password" name="password" placeholder="密码">
+    <button type="submit" class="btn">提交</button>
+  </fieldset>
+</form>
+</div>
+<%- include footer %>
