@@ -6,7 +6,6 @@ var fs = require('fs');
 //国外插件
 var gm = require('gm');
 var imageMagick = gm.subClass({ imageMagick : true });
-
 //引用国内插件
 var images = require("node-images");
 
